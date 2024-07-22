@@ -1,0 +1,27 @@
+{
+  "name": "api-rest-node-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Thiago Lindo",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "http-status-codes": "^2.3.0"
+  },
+  "scripts": {
+    "start": "ts-node-dev ./src/index.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@types/express": "^4.17.21",
+    "eslint": "^9.6.0",
+    "globals": "^15.8.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.2",
+    "typescript-eslint": "^7.15.0"
+  },
+  "overrides": {
+    "eslint": "^9.6.0"
+  }
+}
