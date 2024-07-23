@@ -1,17 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {StatusCodes} from "http-status-codes";
 import { Router } from "express";
-import controller from "../controller/controller";
+import {cidadesController} from './../controller'; // aqui estou pegando os dados ce cidades/index.ts
+
 
 
 const router =  Router();
 
-router.post('/teste/'
-    , (req,res) =>  {
-   
-    return res.status(StatusCodes.UNAUTHORIZED).json(req.body);
-     
-    }
-)
+
+
+
+router.post('/cidades', cidadesController.create);
     
     
 
