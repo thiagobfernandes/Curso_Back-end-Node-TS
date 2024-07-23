@@ -4,12 +4,12 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 
-interface Icidade {
+interface Icidade {  // aqui estou tipando os dados, e estruturando eles
+
     nome: String;
     cep:Number;
     
-} // aqui estou tipando os dados, e estruturando eles
-
+} 
 
 const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
     nome: yup.string().required().min(4), //  aqui estao os dados que serao verificados
