@@ -10,7 +10,11 @@ const router =  Router();
 
 
 
-router.post('/cidades', cidadesController.create);
+router.get('/cidades', cidadesController.getAllValidation, cidadesController.getAll);
+router.get('/cidades/:id', cidadesController.getByidvalidation, cidadesController.getbyId);
+router.put('/cidades/:id', cidadesController.updateByidValidation, cidadesController.updateById);
+router.delete('/cidades/:id', cidadesController.DeletebyidValidation, cidadesController.DeleteByid);
+router.post('/cidades', cidadesController.createValidation, cidadesController.create);
     
     
 
