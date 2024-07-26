@@ -34,14 +34,24 @@ export const updateByidValidation = validation((getschema) => ({
 export const updateById = async (req: Request <IparamProps, {}, IbodyProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
 
    
+    if(Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors:{
+            default:'registro nao encontrado'
+        }
+    });
+        
+    
+    
+        return res.status(StatusCodes.NO_CONTENT).send()
 
-console.log(req.params)
-console.log(req.body)
+        
+    
+
 
     
 
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('nao implementado');
+    
 }
 
 // const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
