@@ -26,7 +26,8 @@ export const getAllValidation = validation((getschema) => ({
 
 
 export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
-
+res.setHeader('acess-control-expose-headers', 'x-total-count'); // se eu nao der  o expose header o navegador nao encontra o x-total-count
+res.setHeader('x-total-count', 1); //setando o valor do header
    
 
 console.log(req.query)
@@ -34,7 +35,12 @@ console.log(req.query)
     
 
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('nao implementado');
+    return res.status(StatusCodes.OK).json([
+        {
+            id:1,
+            nome: "caxias do sul"
+        }
+    ]);
 }
 
 // const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
