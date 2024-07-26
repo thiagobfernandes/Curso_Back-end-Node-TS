@@ -15,7 +15,7 @@ router.get('/cidades/:id', cidadesController.getByidvalidation, cidadesControlle
 router.put('/cidades/:id', cidadesController.updateByidValidation, cidadesController.updateById);
 router.delete('/cidades/:id', cidadesController.DeletebyidValidation, cidadesController.DeleteByid);
 router.post('/cidades', cidadesController.createValidation, cidadesController.create);
-    
+    // teste de integracao
     
 
 export {router};
