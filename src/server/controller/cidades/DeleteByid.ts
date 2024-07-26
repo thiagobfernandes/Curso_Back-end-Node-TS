@@ -14,7 +14,7 @@ interface IdeleteProps{
 
 export const DeletebyidValidation = validation((getschema) => ({
     params:getschema<IdeleteProps>(yup.object().shape({ 
-        id: yup.number().integer("o numero deve ser inteiro").required("Preencha esse campo").moreThan(0, "O numero deve ser maior que 0"),  
+        id: yup.number().integer("o numero deve ser inteiro").required("Preencha esse campo").moreThan(0),  
        
     })),
 
@@ -25,21 +25,14 @@ export const DeletebyidValidation = validation((getschema) => ({
 export const DeleteByid = async (req: Request <IdeleteProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
 
    
-
-console.log(req.params)
-
+if(Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    errors:{
+        default:'Registro nao encontrado'
+    }
+});
     
 
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('nao implementado');
+    return res.status(StatusCodes.NO_CONTENT).send();
 }
 
-// const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
-//     nome: yup.string().required().min(4), //  aqui estao os dados que serao verificados
-//     estado: yup.string().required().min(3)
-
-// });
-
-// export const createValidation = validation({
-//     body:bodyValidation
-// });
