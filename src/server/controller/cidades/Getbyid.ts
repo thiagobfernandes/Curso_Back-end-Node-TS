@@ -28,10 +28,23 @@ export const getbyId = async (req: Request <IparamProps>, res :Response) => { //
 
 console.log(req.params)
 
+  
+if(Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    errors:{
+        default:'registro nao encontrado'
+    }
+});
     
 
 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('nao implementado');
+    return res.status(StatusCodes.OK).json({
+        id: req.params.id,
+        nome:'caxias do sul',
+    });
+    
+
+
+   
 }
 
 // const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
