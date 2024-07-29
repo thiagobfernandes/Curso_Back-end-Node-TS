@@ -1,0 +1,1 @@
+export * from './cidades'; // aqui estou exportando os dados do index.ts das cidades para acessar em routes

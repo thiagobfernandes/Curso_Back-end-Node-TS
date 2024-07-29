@@ -1,0 +1,69 @@
+
+import {  RequestHandler } from "express";
+import { StatusCodes } from "http-status-codes";
+import {  Schema, ValidationError} from "yup";
+
+type Tproperty ='body' | 'header' | 'params' | 'query';
+
+type tallschemas=Record<Tproperty, Schema<any>>; 
+
+ type tvalidation = (scheme: Partial<tallschemas>) => RequestHandler; // como se fosse uma interface
+
+export const validation: tvalidation = (schemas)  => async (req, res, next) =>  {
+ 
+
+ const errorsResult:Record<string, Record<string, string>> = { //Record<string guarda um objeto no body com todos os erros que aconteceram
+    body: {                                                   // pode ser body, header, entre outros
+        "nome": "Nome e obrigatorio",
+        "estado":"estado obrigatorio"
+    }
+    
+ }
+ 
+ 
+ Object.entries(schemas).forEach(([key, schema]) => {
+
+    try {
+        schema.validateSync(req[key as Tproperty], {abortEarly: false }); // validade sync por que ele espera processar para depois 
+                                                                        //dar a resposta
+                                                                            //sobre o erro mapeamento etc
+  } catch (error) {
+  
+  const yupError = error as ValidationError;        // estou verificando  o erro
+  const erros: Record<string, string> = {} ;               //estou deixando esse objeto vazio para mapear os erros
+                                                      // const validations contem um obejto vazio com Atributo sendo do tipo String e o valor do atributo tambem
+                                                      //ele ira receber as mensagens de erro que saira do foreach
+  
+  yupError.inner.forEach(error => {                     // o inner e uma lista de erros que estou percorrendo com o foreach,
+                                                        // o error e um objeto dentro do array inner
+      if(error.path === undefined){                     // error path e o caminho do erro, onde indica onde falhou a validacao 
+  return;                                                   // aqui se o error path for indefinido ele vao passar para o proximo erro, para evitar percorrer um erro indefinido
+      }                         
+      erros[error.path] = error.message;
+           // o error message é a mensagem de erro que mapeamos para esse campo pelo path
+                                                      // e o objeto validationerros associa a mensagem do erro a esse campo
+  });
+
+   console.log(erros)
+  errorsResult[key] = erros;
+ 
+  
+  // default:errorsResult[key as Tproperty] = ValidationErrors // aqui estu enviando uma mensagem pro front-end sobre o err
+  //}});
+  
+ 
+ 
+};
+
+});
+
+if(Object.entries(errorsResult).length === 0){
+      return next();
+
+ } else {
+     return res.status(StatusCodes.BAD_REQUEST).json({erros:  errorsResult});
+    
+     
+
+ }
+    };
