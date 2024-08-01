@@ -4,8 +4,11 @@ import { Request, RequestHandler, Response, query } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
+import { cidadesController } from ".";
+import { cidadesProvider } from "../../database/providers/cidades";
 
 interface IqueryProps{
+    id?:number;
     page?: number; // nao obrigatorio
     limit?:number; // nao obrigatorio
     filter?:string; // nao obrigatorio
@@ -15,9 +18,11 @@ interface IqueryProps{
 
 export const getAllValidation = validation((getschema) => ({
     query:getschema<IqueryProps>(yup.object().shape({ 
+        id:yup.number().integer().default(0),
         page: yup.number().moreThan(0),  
         limit: yup.number().moreThan(0),  
         filter: yup.string(),
+
           
     })),
 
@@ -25,30 +30,34 @@ export const getAllValidation = validation((getschema) => ({
     
 
 
-export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
-res.setHeader('acess-control-expose-headers', 'x-total-count'); // se eu nao der  o expose header o navegador nao encontra o x-total-count
-res.setHeader('x-total-count', 1); //setando o valor do header
-   
+export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res :Response) => {  //em Icidade, estou tipando por que e o terceiro parametro
 
-console.log(req.query)
 
     
+    const result = await cidadesProvider.Getall(req.query.page || 1, req.query.limit || 7, req.query.filter || ' ', Number(req.query.id));
+    if(!req.query.filter){
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors:{
+                default:'Voce precisa adicionar um filtro'
+            }
+        })
+    }
+ const count = await cidadesProvider.count(req.query.filter);
 
+ if(result instanceof  Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors:{ default: result.message}
+    });
+ } else if(count instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: {default: count.message}
+    });
+ }
+ res.setHeader('access-control-expose-headers', 'x-total-count');
+ res.setHeader('x-total-count', count);
+ 
+ return res.status(StatusCodes.OK).json(result)
 
-    return res.status(StatusCodes.OK).json([
-        {
-            id:1,
-            nome: "caxias do sul"
-        }
-    ]);
 }
 
-// const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
-//     nome: yup.string().required().min(4), //  aqui estao os dados que serao verificados
-//     estado: yup.string().required().min(3)
 
-// });
-
-// export const createValidation = validation({
-//     body:bodyValidation
-// });
