@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",
-    "postinstall": "tsc",
+    "postinstall":"tsc",
     "production": "node ./build/index.js",
     "test": "jest",
     "knex:migrate":"yarn knex --knexfile ./src/server/database/knex/Environment.ts migrate:latest",
