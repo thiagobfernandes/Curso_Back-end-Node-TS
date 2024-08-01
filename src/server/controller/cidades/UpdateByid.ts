@@ -4,11 +4,12 @@ import { Request, RequestHandler, Response, query } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
+import { ICidade } from "../../database/models";
 
 interface IparamProps{
     id?: number; // obrigatorio   
 }
-interface IbodyProps{
+interface IbodyProps extends Omit<ICidade, 'id'>{
     nome:string
 }
 //paginacao
