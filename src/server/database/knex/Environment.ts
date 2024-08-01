@@ -15,6 +15,7 @@ export  const development: Knex.Config = {
         directory:path.resolve(__dirname, '..', 'seeds'), 
     },
     pool: {
+        // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
         afterCreate: (connection: any , done: Function) => {
             connection.run('PRAGMA foreing_keys = ON'); // aqui estou falanado que o banco de dados pode trabalhar com chaves estrangeiras
             done();
