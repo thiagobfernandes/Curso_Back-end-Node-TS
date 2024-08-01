@@ -5,13 +5,14 @@ import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
 import { ICidade } from "../../database/models";
+import { cidadesProvider } from "../../database/providers/cidades";
 
+
+interface IbodyProps extends Omit<ICidade, 'id'>{ }
 interface IparamProps{
     id?: number; // obrigatorio   
 }
-interface IbodyProps extends Omit<ICidade, 'id'>{
-    nome:string
-}
+
 //paginacao
 
 export const updateByidValidation = validation((getschema) => ({
@@ -33,17 +34,28 @@ export const updateByidValidation = validation((getschema) => ({
 
 
 export const updateById = async (req: Request <IparamProps, {}, IbodyProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
-
-   
-    if(Number(req.params.id) === 9999) return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+if(!req.params.id ){
+    return res.status(StatusCodes.BAD_REQUEST).json({
         errors:{
-            default:'registro nao encontrado'
+            default:"voce precisa inserir um id ou nome",
         }
-    });
-        
+    })
+}
+
+    const result = await cidadesProvider.UpdateByid(req.params.id, req.body);
+    if(result instanceof Error){
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors:{
+                default:result.message
+            }
+        })
+    }
+
     
-    
-        return res.status(StatusCodes.NO_CONTENT).send()
+
+
+
+  return res.status(StatusCodes.NO_CONTENT).json(result)
 
         
     
