@@ -1,7 +1,7 @@
 
 import {  RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import {  Maybe, ObjectSchema,  ValidationError, AnyObject} from "yup";
+import {  Maybe, ObjectSchema,  ValidationError, AnyObject} from "yup"; 
 
 type Tproperty = 'body' | 'header' | 'params' | 'query'; // o Tproperty ele vai conter os valores dados apos o simbolo =
 
