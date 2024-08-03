@@ -6,7 +6,7 @@ export  const development: Knex.Config = {
     client: 'sqlite3', //banco de dados local,
     useNullAsDefault:true,
     connection:{
-        filename:path.resolve(__dirname,'..','..','..','..', 'database.sqlite'), // caminho aonde vai ser criado o db
+        filename:path.resolve(__dirname,'..','..','..','..','database.sqlite'), // caminho aonde vai ser criado o db
     },
     migrations:{
         directory:path.resolve(__dirname, '..', 'migrations'), 
@@ -17,11 +17,13 @@ export  const development: Knex.Config = {
     pool: {
         // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
         afterCreate: (connection: any , done: Function) => {
-            connection.run('PRAGMA foreing_keys = ON'); // aqui estou falanado que o banco de dados pode trabalhar com chaves estrangeiras
+            connection.run('PRAGMA foreign_keys = ON'); // aqui estou falanado que o banco de dados pode trabalhar com chaves estrangeiras
             done();
+            console.log(path.resolve(__dirname,'..','..','..','..', 'database.sqlite'));
 
         }
     }
+   
 };
 
 
