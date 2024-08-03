@@ -30,19 +30,15 @@ export const getAllValidation = validation((getschema) => ({
     
 
 
-export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res :Response) => {  //em Icidade, estou tipando por que e o terceiro parametro
+export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res:Response) => {  //em Icidade, estou tipando por que e o terceiro parametro
 
 
     
-    const result = await cidadesProvider.Getall(req.query.page || 1, req.query.limit || 7, req.query.filter || ' ', Number(req.query.id));
-    if(!req.query.filter){
-        return res.status(StatusCodes.BAD_REQUEST).json({
-            errors:{
-                default:'Voce precisa adicionar um filtro'
-            }
-        })
-    }
- const count = await cidadesProvider.count(req.query.filter);
+    const result = await cidadesProvider.Getall(req.query.page || 1, req.query.limit || 7, req.query.filter || '', Number(req.query.id));
+    
+ const count = await cidadesProvider.count(req.query.filter || '');
+
+ 
 
  if(result instanceof  Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -52,9 +48,15 @@ export const getAll  = async (req: Request <{}, {}, {}, IqueryProps>, res :Respo
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors: {default: count.message}
     });
+// verificando se o numero recebido nao e nan
  }
+
+
  res.setHeader('access-control-expose-headers', 'x-total-count');
- res.setHeader('x-total-count', count);
+ res.setHeader('x-total-count', count)
+
+
+ 
  
  return res.status(StatusCodes.OK).json(result)
 
