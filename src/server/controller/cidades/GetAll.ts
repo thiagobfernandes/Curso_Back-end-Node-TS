@@ -4,7 +4,6 @@ import { Request, RequestHandler, Response, query } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
-import { cidadesController } from ".";
 import { cidadesProvider } from "../../database/providers/cidades";
 
 interface IqueryProps{
@@ -21,7 +20,7 @@ export const getAllValidation = validation((getschema) => ({
         id:yup.number().integer().default(0),
         page: yup.number().moreThan(0),  
         limit: yup.number().moreThan(0),  
-        filter: yup.string(),
+        filter: yup.string()
 
           
     })),
