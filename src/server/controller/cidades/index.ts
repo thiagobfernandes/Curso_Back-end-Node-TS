@@ -13,5 +13,5 @@ export const cidadesController = {
     ...DeleteByid
 }
 
-cidadesController.create;
-cidadesController.createValidation; // aqui estou exportando os dados do Create
+
+
