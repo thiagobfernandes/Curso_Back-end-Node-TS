@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { validation } from "../../shared/middleware";
 import { UsuariosProvider } from "../../database/providers/usuario";
 import { Response, Request } from "express";
+import bcrypt from 'bcrypt';
 
 interface IBodyProps extends Omit<Iusuario, 'id'> {
 }
@@ -19,7 +20,12 @@ export const UsuarioValidation = validation((getschema) => ({
 
 
 export const SignUp = async (req:Request<{},{}, IBodyProps>, res:Response) => {
-    const result = await UsuariosProvider.create(req.body);
+   
+
+
+    
+
+    const result = await UsuariosProvider.create(req.body); // nome email e senha
     if(result instanceof Error){
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             errors: {
@@ -27,6 +33,8 @@ export const SignUp = async (req:Request<{},{}, IBodyProps>, res:Response) => {
             }
         })
     }
+    
     return res.status(StatusCodes.CREATED).json(result);
+    
 
 }
