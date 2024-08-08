@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
 import { Response,Request } from "express";
 import { StatusCodes } from "http-status-codes";
+import { PasswordCrypto } from "../../shared/service";
 
 interface IBodyProps extends Omit<Iusuario,'id' | 'nome'> {
     
@@ -18,14 +19,11 @@ export const GetbyEmailvalidation = validation((Getemail) => ({
 }))
 // (req: Request<Iparams>, res:Response) aqui estou falando que a req tem que ser do tipo email string
 export const SignIn = async (req: Request<{}, {}, IBodyProps>, res:Response) => {
-
-
-
     
 
     const {email, password} = req.body;
 
-    const result = await UsuariosProvider.GetByEmail(email);
+    const result = await UsuariosProvider.GetByEmail(email); // consultando usuario no banco
 
  if(result instanceof Error){
     return res.status(StatusCodes.UNAUTHORIZED).json({
@@ -35,8 +33,10 @@ export const SignIn = async (req: Request<{}, {}, IBodyProps>, res:Response) => 
     });
 
  }  
+
+const PasswordMatch  =  await PasswordCrypto.verifyPassword(password, result.password) // aqui estou comparando as senhas
  
- if(password !== result.password){
+ if(!PasswordMatch){
     return res.status(StatusCodes.UNAUTHORIZED).json({
         errors:{
             default:"email ou senha invalidos"
