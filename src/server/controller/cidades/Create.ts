@@ -14,18 +14,7 @@ interface IBodyProps extends Omit<ICidade, 'id'>{  // omitindo os dados por que 
     
 
 } 
-//tipando os dados para os schemas
 
-
-// const bodyValidation: yup.Schema<Icidade> = yup.object().shape({ //usando a biblioteca yup para validação
-//     nome: yup.string().required().min(4), //  aqui estao os dados que serao verificados
-//     estado: yup.string().required().min(3)
-
-// });
-
-// export const createValidation = validation({
-//     body:bodyValidation
-// });
 
 export const createValidation = validation((getschema) => ({
     body:getschema<IBodyProps>(yup.object().shape({ //usando a biblioteca yup para validação
