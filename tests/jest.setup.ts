@@ -5,7 +5,8 @@ import { Knex } from '../src/server/database/knex';
 //importando server
 
 beforeAll( async () => {
-    await Knex.migrate.latest(); // estou aguardando o migrate 
+    await Knex.migrate.latest();
+    await Knex.seed.run(); // estou aguardando o migrate 
 });
 afterAll(async () => {
     await Knex.destroy(); 
