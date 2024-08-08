@@ -1,11 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {StatusCodes} from "http-status-codes";
 import { Router } from "express";
-import {cidadesController} from './../controller'; // aqui estou pegando os dados ce cidades/index.ts
+import {cidadesController} from './../controller';
+import { PessoasController } from "./../controller";
+import { UsuarioController } from "./../controller";
 
 
 
 const router =  Router();
+
+
+router.post('/entrar', UsuarioController.GetbyEmailvalidation, UsuarioController.SignIn);
+router.post('/cadastrar', UsuarioController.UsuarioValidation, UsuarioController.SignUp)
+
+
+
+
+router.get('/pessoas', PessoasController.getAllValidation, PessoasController.getAll)
+router.post('/pessoas',PessoasController.CreateValidation, PessoasController.createPessoas)
+router.get('/pessoas/:id', PessoasController.GetByIdValidation, PessoasController.GetbyId)
+router.put('/pessoas/:id',PessoasController.updateValidation, PessoasController.UpdatePessoas)
+router.delete('/pessoas/:id', PessoasController.DeleteByIdValidation, PessoasController.deletebyid);
 
 
 
