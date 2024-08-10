@@ -1,10 +1,11 @@
 import { UsuariosProvider } from "../../database/providers/usuario";
 import { Iusuario } from "../../database/models";
 import * as yup from 'yup';
-import { validation } from "../../shared/middleware";
+import { JWTservice, validation } from "../../shared/middleware";
 import { Response,Request } from "express";
 import { StatusCodes } from "http-status-codes";
 import { PasswordCrypto } from "../../shared/service";
+
 
 interface IBodyProps extends Omit<Iusuario,'id' | 'nome'> {
     
@@ -23,9 +24,9 @@ export const SignIn = async (req: Request<{}, {}, IBodyProps>, res:Response) => 
 
     const {email, password} = req.body;
 
-    const result = await UsuariosProvider.GetByEmail(email); // consultando usuario no banco
+    const usuario = await UsuariosProvider.GetByEmail(email); // consultando usuario no banco
 
- if(result instanceof Error){
+ if(usuario instanceof Error){
     return res.status(StatusCodes.UNAUTHORIZED).json({
         errors:{
             default:"email ou senha invalidos"
@@ -34,19 +35,34 @@ export const SignIn = async (req: Request<{}, {}, IBodyProps>, res:Response) => 
 
  }  
 
-const PasswordMatch  =  await PasswordCrypto.verifyPassword(password, result.password) // aqui estou comparando as senhas
+const PasswordMatch  =  await PasswordCrypto.verifyPassword(password, usuario.password) // aqui estou comparando as senhas
  
  if(!PasswordMatch){
     return res.status(StatusCodes.UNAUTHORIZED).json({
         errors:{
-            default:"email ou senha invalidos"
+            default:"Erro de gerar o token de acesso"
         } 
     }) 
 
  } else {
-  return res.status(StatusCodes.OK).json({accessToken: 'teste.teste.teste'})
- }
 
+    const accessToken = JWTservice.sign({uid: usuario.id})
+
+    if(accessToken === 'JWT_SECRET_NOT_FOUND') {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            errors:{
+                default:"email ou senha invalidos"
+            } 
+        }) 
+
+    }
+
+
+
+
+  return res.status(StatusCodes.OK).json({accessToken})
+ }
+ 
 }
 
 
