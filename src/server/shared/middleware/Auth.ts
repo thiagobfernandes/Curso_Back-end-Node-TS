@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import { JWTservice } from "./JWTService";
 
 export const ensureAuthenticated : RequestHandler = async (req,res,next) => {
 const { authorization } = req.headers;
@@ -26,6 +27,24 @@ if(type !== 'Bearer'){ //validando o tipo de token
     });
 
 }
+
+const jwtdata= JWTservice.verify(token);
+
+if(jwtdata === 'JWT_SECRET_NOT_FOUND'){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        errors: { default: 'Erro ao verificar o token'}
+    })
+} else if( jwtdata === "INVALID_TOKEN"){
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+        errors: { default: 'Token Invalido'}
+    })
+
+
+}
+
+
+console.log(jwtdata);
+req.headers.idUsuario = jwtdata.uid.toString();
 
 
 
