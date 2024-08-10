@@ -27,7 +27,10 @@ export const createValidation = validation((getschema) => ({
 
 
 export const create  = async (req: Request <{}, {}, IBodyProps>, res :Response) => { //em Icidade, estou tipando por que e o terceiro parametro
- const result = await cidadesProvider.create(req.body);
+ 
+ console.log('IdUsuario', req.headers.idUsuario);
+ 
+    const result = await cidadesProvider.create(req.body);
  if(result instanceof Error){ // se tiver uma instacia de erro enviar um status code de erro
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors:{
