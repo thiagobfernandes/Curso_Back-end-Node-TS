@@ -1,7 +1,6 @@
 import { Knex } from "knex";
 import path from 'path'
-import { Database } from "sqlite3";
-import { number } from "yup";
+
  // nesse arquivo estou criando um banco de dados local 
 
 export  const development: Knex.Config = {
@@ -40,8 +39,8 @@ export  const test :Knex.Config = {
 
 
 
-export  const production:Knex.Config = {
-    client: 'pg', //banco de dados local,
+export const production:Knex.Config = {
+    client:'pg', //banco de dados local,
     migrations:{
         directory:path.resolve(__dirname, '..', 'migrations'), 
     },
@@ -53,7 +52,7 @@ export  const production:Knex.Config = {
         user: process.env.DATABASE_USER,
         database:process.env.DATABASE_NAME,
         password: process.env.DATABASE_PASSWORD,
-        port: Number(process.env.DATABASE_PORT || 5432),
+        port: Number(process.env.DATABASE_PORT),
         ssl: {rejectUnauthorized:false},
     
     }
