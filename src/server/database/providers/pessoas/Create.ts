@@ -1,37 +1,29 @@
-import  { Knex } from "../../knex";
-import { EtableNames } from "../../knex/ETableNames";
-import { Ipessoa} from "../../models";
+import { ETableNames } from '../../ETableNames';
+import { IPessoa } from '../../models';
+import { Knex } from '../../knex';
 
-export const create = async (pessoa: Omit<Ipessoa,'id'>):Promise<number | Error>  => {
-    try{
-        const [{count}] = await Knex(EtableNames.cidades) // aqui e para conexao entre a tabe;a cidades e nomes
-        .where('id','=',pessoa.cidadeId) // precisa haver cidade id
-        .count<[{count :number}]>('* as count'); 
-        
-        if(count === 0){
-            return new Error('a cidade usada no cadastro nao foi encontrada')
-        }
 
-        const [result] = await Knex(EtableNames.pessoas).insert(pessoa).returning('id');
-        if(typeof result === 'object'){
-            return result.id;
-        } else if(typeof result === 'number'){
-            return result;
-        }
+export const create = async (pessoa: Omit<IPessoa, 'id'>): Promise<number | Error> => {
+  try {
+    const [{ count }] = await Knex(ETableNames.cidade)
+      .where('id', '=', pessoa.cidadeId)
+      .count<[{ count: number }]>('* as count');
 
-        return new Error('Erro ao Registrar')
-        
-      
-    } catch(error) { 
-        console.log(error);
-        return new Error('Erro ao cadastrar o registro')
-
+    if (count === 0) {
+      return new Error('A cidade usada no cadastro não foi encontrada');
     }
 
 
+    const [result] = await Knex(ETableNames.pessoa).insert(pessoa).returning('id');
+    if (typeof result === 'object') {
+      return result.id;
+    } else if (typeof result === 'number') {
+      return result;
+    }
 
-
-
+    return new Error('Erro ao cadastrar o registro');
+  } catch (error) {
+    console.log(error);
+    return new Error('Erro ao cadastrar o registro');
+  }
 };
-
-// (cidade: Omit<ICidade, 'id'>) vai receber o tipo de dados de uma cidade como nomes 

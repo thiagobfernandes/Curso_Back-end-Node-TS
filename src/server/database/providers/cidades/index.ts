@@ -1,19 +1,16 @@
- import *  as  create from './Create'
- import *  as  GetAll from './GetAll'
-import *  as  getbyid from './Getbyid'
-import *  as  updateById from './UpdateByid'
-import *  as  DeleteByid from './DeleteByid'
-import * as count from './count'
+import * as deleteById from './DeleteById';
+import * as updateById from './UpdateById';
+import * as getById from './GetById';
+import * as create from './Create';
+import * as getAll from './GetAll';
+import * as count from './Count';
 
 
-export const cidadesProvider = {
-    ...create,
-     ...GetAll,
-    ...getbyid,
-    ...updateById,
-    ...DeleteByid,
-    ...count
-}
-
-// cidadesController.create;
-// cidadesController.ycreateValidation; // aqui estou exportando os dados do Create
+export const CidadesProvider = {
+  ...deleteById,
+  ...updateById,
+  ...getById,
+  ...create,
+  ...getAll,
+  ...count,
+};

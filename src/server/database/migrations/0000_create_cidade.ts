@@ -1,25 +1,27 @@
-import {Knex} from 'knex';
-import { EtableNames } from '../knex/ETableNames';
+import { Knex } from 'knex';
+
+import { ETableNames } from '../ETableNames';
 
 
+export async function up(knex: Knex) {
+  return knex
+    .schema
+    .createTable(ETableNames.cidade, table => {
+      table.bigIncrements('id').primary().index();
+      table.string('nome', 150).checkLength('<=', 150).index().notNullable();
 
-export async function up(knex: Knex)  { //metodo up criando a tabela
-    return knex.schema.createTable(EtableNames.cidades, table => {
-        table.bigIncrements('id').primary().index();
-        table.string('nome').checkLength('<=', 150).index().notNullable(); //Coluna que vai ser do tipo BIginteger, auto incrementada
-        table.comment('Tabela utilizada para armazenar cidades do sistemas')
-
+      table.comment('Tabela usada para armazenar cidades do sistema.');
     })
     .then(() => {
-        console.log(` # Create table ${EtableNames.cidades}`);
+      console.log(`# Created table ${ETableNames.cidade}`);
     });
-    
 }
+
 export async function down(knex: Knex) {
-    return knex.schema.dropTable(EtableNames.cidades)
+  return knex
+    .schema
+    .dropTable(ETableNames.cidade)
     .then(() => {
-        console.log(`# drop table ${EtableNames.cidades}`);
+      console.log(`# Dropped table ${ETableNames.cidade}`);
     });
-    
-    
 }

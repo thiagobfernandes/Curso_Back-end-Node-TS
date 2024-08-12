@@ -1,17 +1,17 @@
 import supertest from 'supertest';
-//importando supertest
-import { server } from '../src/server/Server';
 import { Knex } from '../src/server/database/knex';
-//importando server
 
-beforeAll( async () => {
-    await Knex.migrate.latest();
-    await Knex.seed.run(); // estou aguardando o migrate 
+import { server } from '../src/server/Server';
+
+
+beforeAll(async () => {
+  await Knex.migrate.latest();
+  await Knex.seed.run();
 });
+
 afterAll(async () => {
-    await Knex.destroy(); 
-})
+  await Knex.destroy();
+});
 
 
-export const testserver= supertest(server); // exportando dados
-
+export const testServer = supertest(server);

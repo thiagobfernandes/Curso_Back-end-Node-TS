@@ -1,27 +1,30 @@
-import { EtableNames } from "../knex/ETableNames";
-import knex, { Knex } from "knex";
+import { Knex } from 'knex';
 
-export async function up(knex:Knex){
-    return knex.schema.createTable(EtableNames.usuarios, table => {
-        table.bigIncrements('id').primary().index(),
-        table.string('nome').checkLength('>', 3).notNullable(),
-        table.string('email').notNullable().unique().checkLength('>', 6),
-        table.string('password').checkLength('>',6).index().notNullable()
-        
+import { ETableNames } from '../ETableNames';
 
-        table.comment("tabela para controle de usuarios")
 
-})
-.then(() => {
-    console.log("# Tabela de usuarios Criada com Sucesso")
-})
+export async function up(knex: Knex) {
+  return knex
+    .schema
+    .createTable(ETableNames.usuario, table => {
+      table.bigIncrements('id').primary().index();
+      table.string('nome').notNullable().checkLength('>=', 3);
+      table.string('senha').notNullable().checkLength('>=', 6);
+      table.string('email').index().unique().notNullable().checkLength('>=', 5);
 
+
+      table.comment('Tabela usada para armazenar usuários do sistema.');
+    })
+    .then(() => {
+      console.log(`# Created table ${ETableNames.usuario}`);
+    });
 }
 
-export async function down(knex: Knex){
-    return knex.schema.dropTable(EtableNames.usuarios)
+export async function down(knex: Knex) {
+  return knex
+    .schema
+    .dropTable(ETableNames.usuario)
     .then(() => {
-        console.log("# Tabela deletada com sucesso");
-    })
-    
+      console.log(`# Dropped table ${ETableNames.usuario}`);
+    });
 }
