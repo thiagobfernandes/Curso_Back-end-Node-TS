@@ -1,0 +1,18 @@
+type Tproperty = 'body' | 'header' | 'params' | 'query'; // o Tproperty ele vai conter os valores dados apos o simbolo =
+// aqui estou pegando os valores de https
+
+type Tgetschema = <T> (schema: Schema<any>) => Schema<T> 
+// aqui estou falando pro typescript a tipagem desse dado vai ser uma funcao que recebe como parametro um dado que nao precisa ser tipado
+//e a minha reposta e o dado tipado ou seja a funcao pode receber um dado sem tipagem mas nao pode retornar um sem tipagem
+
+
+type tallschemas=Record<Tproperty, Schema<any>>; 
+// aqui estou falando que vou criar um objeto que vai receber o metodo https recebido, do Tproperty
+//e como o valor vai receber o Schema que aceita qualquer tipagem de dado
+
+type Tgetallschemas = (getSchema: Tgetschema) => Partial<tallschemas>;
+//aqui estou pegando a tipagem de  Tgetschema e atribuindo a getSchema
+//fazendo com  que o dado que eu receber seja tipado
+
+ type tvalidation = (getallschemas:Tgetallschemas) => RequestHandler; // como se fosse uma interface
+ //aqui estou pegando essa linha de resultado e jogando pro requestHandler 

@@ -1,20 +1,26 @@
-import { ETableNames } from '../../ETableNames';
-import { IPessoa } from '../../models';
-import { Knex } from '../../knex';
+import { Knex } from "../../knex";
+ import { EtableNames } from "../../knex/ETableNames";
+import { Ipessoa} from "../../models";
 
-
-export const getById = async (id: number): Promise<IPessoa | Error> => {
-  try {
-    const result = await Knex(ETableNames.pessoa)
-      .select('*')
-      .where('id', '=', id)
-      .first();
-
-    if (result) return result;
-
-    return new Error('Registro não encontrado');
-  } catch (error) {
+ export const Getbyid = async (id:number):Promise<Ipessoa | Error> => {
+    try{
+    const result = await Knex(EtableNames.pessoas)
+    .select('*')
+    .where('id', '=', id)
+    .first();
+    if(result) return result;
+    return new Error('registro nao encontrado');
+} catch(error) {
     console.log(error);
-    return new Error('Erro ao consultar o registro');
-  }
-};
+    return new Error('registro nao encontrado');
+    
+
+
+}
+
+ }
+
+
+
+
+

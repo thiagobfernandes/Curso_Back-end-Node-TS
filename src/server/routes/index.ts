@@ -1,33 +1,37 @@
-import { Router } from 'express';
-
-import { CidadesController, PessoasController, UsuariosController } from './../controllers';
-import { ensureAuthenticated } from '../shared/middleware';
-
-
-
-const router = Router();
-
-
-
-router.get('/', (_, res) => {
-  return res.send('Olá, DEV!');
-});
-
-router.get('/cidades', ensureAuthenticated, CidadesController.getAllValidation, CidadesController.getAll);
-router.post('/cidades', ensureAuthenticated, CidadesController.createValidation, CidadesController.create);
-router.get('/cidades/:id', ensureAuthenticated, CidadesController.getByIdValidation, CidadesController.getById);
-router.put('/cidades/:id', ensureAuthenticated, CidadesController.updateByIdValidation, CidadesController.updateById);
-router.delete('/cidades/:id', ensureAuthenticated, CidadesController.deleteByIdValidation, CidadesController.deleteById);
-
-router.get('/pessoas', ensureAuthenticated, PessoasController.getAllValidation, PessoasController.getAll);
-router.post('/pessoas', ensureAuthenticated, PessoasController.createValidation, PessoasController.create);
-router.get('/pessoas/:id', ensureAuthenticated, PessoasController.getByIdValidation, PessoasController.getById);
-router.put('/pessoas/:id', ensureAuthenticated, PessoasController.updateByIdValidation, PessoasController.updateById);
-router.delete('/pessoas/:id', ensureAuthenticated, PessoasController.deleteByIdValidation, PessoasController.deleteById);
-
-router.post('/entrar', UsuariosController.signInValidation, UsuariosController.signIn);
-router.post('/cadastrar', UsuariosController.signUpValidation, UsuariosController.signUp);
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {StatusCodes} from "http-status-codes";
+import { Router } from "express";
+import {cidadesController} from './../controller';
+import { PessoasController } from "./../controller";
+import { UsuarioController } from "./../controller";
+import {ensureAuthenticated} from '../shared/middleware/index'
 
 
 
-export { router };
+const router =  Router();
+
+
+router.post('/entrar', UsuarioController.GetbyEmailvalidation, UsuarioController.SignIn);
+router.post('/cadastrar', UsuarioController.UsuarioValidation, UsuarioController.SignUp)
+
+
+
+
+router.get('/pessoas', ensureAuthenticated, PessoasController.getAllValidation, PessoasController.getAll)
+router.post('/pessoas', ensureAuthenticated,PessoasController.CreateValidation, PessoasController.createPessoas)
+router.get('/pessoas/:id', ensureAuthenticated, PessoasController.GetByIdValidation, PessoasController.GetbyId)
+router.put('/pessoas/:id', ensureAuthenticated,PessoasController.updateValidation, PessoasController.UpdatePessoas)
+router.delete('/pessoas/:id', ensureAuthenticated, PessoasController.DeleteByIdValidation, PessoasController.deletebyid);
+
+
+
+
+router.get('/cidades', ensureAuthenticated, cidadesController.getAllValidation, cidadesController.getAll);
+router.get('/cidades/:id', ensureAuthenticated, cidadesController.getByidvalidation, cidadesController.getbyId);
+router.put('/cidades/:id', ensureAuthenticated, cidadesController.updateByidValidation, cidadesController.updateById);
+router.delete('/cidades/:id', ensureAuthenticated, cidadesController.DeletebyidValidation, cidadesController.DeleteByid);
+router.post('/cidades', ensureAuthenticated, cidadesController.createValidation, cidadesController.create);
+    // teste de integracao
+    
+
+export {router};
