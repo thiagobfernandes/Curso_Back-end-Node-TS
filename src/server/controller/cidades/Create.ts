@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
 import { ICidade } from "../../database/models";
-import { cidadesProvider } from "../../database/providers/cidades";
+import { CidadesProvider } from "../../database/providers/cidades";
 
 
 
@@ -30,7 +30,7 @@ export const create  = async (req: Request <{}, {}, IBodyProps>, res :Response) 
  
  console.log('IdUsuario', req.headers.idUsuario);
  
-    const result = await cidadesProvider.create(req.body);
+    const result = await CidadesProvider.create(req.body);
  if(result instanceof Error){ // se tiver uma instacia de erro enviar um status code de erro
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         errors:{
